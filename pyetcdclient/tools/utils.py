@@ -7,7 +7,8 @@
 @software: PyCharm
 @time: 2020-02-17 04:12
 """
-
+import uuid
+import random
 import logging
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%b-%d %H:%M:%S',
@@ -29,3 +30,14 @@ class LOG(object):
     @staticmethod
     def error(value):
         logging.error(value)
+
+class RANDOM(object):
+    @staticmethod
+    def select(list):
+        if len(list) > 0:
+            return random.choice(list)
+        return None
+
+    @staticmethod
+    def UUID():
+        return uuid.uuid4()

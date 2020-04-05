@@ -7,14 +7,20 @@
 @software: PyCharm
 @time: 2020-02-17 03:55
 """
-import random
 import time
 import etcd3
-from pyetcdclient.tools.utils import LOG
+from pyetcdclient.tools.utils import LOG, RANDOM
 from multiprocessing.pool import ThreadPool
 from concurrent.futures import ThreadPoolExecutor
 
 class EtcdClient(object):
+    UUID = None
+
+    def __new__(cls, *args, **kwargs):
+        if not cls.UUID:
+            cls.UUID = RANDOM.UUID()
+        return super().__new__(cls)
+
     def __init__(self, ServerList=("127.0.0.1:2379",), TLS=False, User=None, Password=None):
         self.serverlist = list()
         self.etcd_clientlist_length = 0
@@ -54,7 +60,7 @@ class EtcdClient(object):
 
     def RandomClientChoice(self):
         if self.etcd_clientlist_length > 0:
-            return random.choice(self.etcd_clientlist)
+            return RANDOM.select(self.etcd_clientlist)
         else:
             raise Exception("EtcdClient - No Sufficient Client List")
 
